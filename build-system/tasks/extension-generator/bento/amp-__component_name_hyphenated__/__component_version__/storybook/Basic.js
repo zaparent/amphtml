@@ -27,12 +27,11 @@ export default {
 
 export const _default = () => {
   return (
-    <amp-__component_name_hyphenated__
-      width="300"
-      height="200"
-      example-property="example string property value"
+    <__component_name_pascalcase__
+      style={{width: 300, height: 200}}
+      exampleProperty="example string property value"
     >
       This text is inside.
-    </amp-__component_name_hyphenated__>
+    </__component_name_pascalcase__>
   );
 };
