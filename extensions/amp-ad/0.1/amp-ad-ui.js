@@ -256,7 +256,7 @@ export class AmpAdUIHandler {
   }
 
   /**
-   * The function that add a close button to sticky ad
+   * The function that add a close button to sticky ad1
    */
   addCloseButton_() {
     const closeButton = createElementWithAttributes(
