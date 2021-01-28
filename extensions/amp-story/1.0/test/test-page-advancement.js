@@ -129,6 +129,19 @@ describes.realWin('page-advancement', {amp: true}, (env) => {
 
         expect(advancement).to.not.be.instanceOf(TimeBasedAdvancement);
       });
+
+      it('should ignore storyNextUp if auto-advance-after set', () => {
+
+        env.sandbox.stub(viewer, 'getParam').withArgs('storyNextUp').returns('10s');
+        const pageEl = html`
+          <amp-story-page auto-advance-after="3s"> </amp-story-page>
+        `;
+        const advancement = AdvancementConfig.forElement(win, pageEl);
+
+        expect(advancement.delayMs_).to.equal(3000);
+      });
+
+
     });
 
     describe('MediaBasedAdvancement', () => {

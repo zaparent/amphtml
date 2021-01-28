@@ -249,6 +249,22 @@ export class AdvancementConfig {
       }
     }
 
+    const storyNextUpStr = Services.viewerForDoc(element).getParam(
+      'storyNextUp'
+    );
+
+    console.log(storyNextUpStr);
+    if (storyNextUpStr) {
+      const timeBasedAdvancement = TimeBasedAdvancement.fromAutoAdvanceString(
+        storyNextUpStr,
+        win,
+        element
+      );
+      if (timeBasedAdvancement) {
+        return timeBasedAdvancement;
+      }
+    }
+
     return new AdvancementConfig();
   }
 }
@@ -917,6 +933,30 @@ export class TimeBasedAdvancement extends AdvancementConfig {
     }
 
     const delayMs = timeStrToMillis(autoAdvanceStr);
+    if (delayMs === undefined || isNaN(delayMs)) {
+      return null;
+    }
+
+    return new TimeBasedAdvancement(win, Number(delayMs), element);
+  }
+
+  /**
+   * Gets an instance of TimeBasedAdvancement based on the value of the
+   * storyNextUp param for pages which have no next. This allows the browser
+   * to force a default behavior of auto-advancing on the last page.
+   * @param {string} storyNextUpStr The value of the storyNextUp param.
+   * @param {!Window} win
+   * @param {!Element} element
+   * @return {?AdvancementConfig} An AdvancementConfig, if time-based
+   *     auto-advance is supported for the specified storyNextUp string
+   *     and there is no next page; null otherwise.
+   */
+  static fromStoryNextUpString(storyNextUpStr, win, element) {
+    if (!storyNextUpStr || element.nextElementSibling) {
+      return null;
+    }
+
+    const delayMs = timeStrToMillis(storyNextUpStr);
     if (delayMs === undefined || isNaN(delayMs)) {
       return null;
     }
